@@ -231,7 +231,7 @@ export default function Home() {
           </datalist>
         </div>
 
-        <div className="mb-4 md:hidden">
+        <div className="mb-4">
           <button
             onClick={() => setShowFilters((prev) => !prev)}
             className="px-4 py-2 border rounded bg-blue-600 text-white"
@@ -240,8 +240,7 @@ export default function Home() {
           </button>
         </div>
 
-        {(showFilters ||
-          (typeof window !== "undefined" && window.innerWidth >= 768)) && (
+        {showFilters && (
           <div className="flex flex-wrap gap-2 mb-8">
             <button
               onClick={() => togglePriceRange([10, 100])}

@@ -5,6 +5,7 @@ Uma aplicação web para compra de ingressos e gerenciamento de eventos, desenvo
 ## Sumário
 
 - [Instalação e Execução](#instalação-e-execução)
+- [Cobertura de Testes](#cobertura-de-testes)
 - [Regras de Negócio](#regras-de-negócio)
 - [Funcionalidades Implementadas](#funcionalidades-implementadas)
 - [Melhorias e Otimizações Futuras](#melhorias-e-otimizações-futuras)
@@ -30,6 +31,27 @@ npm install
 
 npm run dev
 ### A aplicação ficará disponível em http://localhost:3000.
+
+## Testes Automatizados com Jest
+
+A aplicação conta com testes automatizados utilizando Jest para garantir a estabilidade e funcionamento correto das funcionalidades principais.
+
+### Executando os Testes
+
+Para rodar todos os testes, utilize o comando:
+
+npm run test
+
+### Ao iniciar os testes, pressione a tecla a para executar todos os testes da aplicação.
+
+## Cobertura de Testes
+Os testes incluem verificações para:
+
+Listagem e filtragem de eventos.
+Adição e remoção de ingressos no carrinho.
+Persistência do carrinho no localStorage.
+Autenticação e proteção de rotas.
+Cálculo correto de preços, incluindo regras de meia-entrada, VIP e taxas de conveniência.
 
 # Regras de Negócio
 Listagem de Eventos:

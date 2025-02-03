@@ -9,7 +9,6 @@ Uma aplicação web para compra de ingressos e gerenciamento de eventos, desenvo
 - [Funcionalidades Implementadas](#funcionalidades-implementadas)
 - [Melhorias e Otimizações Futuras](#melhorias-e-otimizações-futuras)
 - [Tecnologias Utilizadas](#tecnologias-utilizadas)
-- [Licença](#licença)
 
 ## Instalação e Execução
 

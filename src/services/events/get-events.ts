@@ -11,12 +11,9 @@ export const getEvents = async () => {
 };
 
 export const getEventById = async (id: number) => {
-  console.log("getEventById", id);
   try {
     const response = await api.get(`/events/${id}`);
-    console.log(response.data);
     return response.data;
-
   } catch (error) {
     console.error("Erro no getEventById:", error);
     throw error;

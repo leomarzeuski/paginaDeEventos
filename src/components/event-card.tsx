@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
-import { Star } from "lucide-react"; // Importa o ícone de estrela
+import { Star } from "lucide-react";
 
 interface EventCardProps {
   id: number;

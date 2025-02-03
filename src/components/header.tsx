@@ -11,8 +11,6 @@ export function SiteHeader() {
   const { user } = useAuth();
   const { items } = useCart();
 
-  console.log({ user });
-
   const cartQuantity = items.reduce((sum, item) => sum + item.quantity, 0);
 
   return (
@@ -57,9 +55,6 @@ export function SiteHeader() {
         </div>
         {menuOpen && (
           <div className="md:hidden flex flex-col gap-4 items-center bg-[#0037B3] py-4">
-            <Link href="#" className="text-white hover:text-white/90">
-              Suporte ao Fã
-            </Link>
             {user ? (
               <Link href="/profile" className="text-white hover:text-white/90">
                 Olá, {user.name}

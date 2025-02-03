@@ -1,101 +1,317 @@
-import Image from "next/image";
+"use client";
+
+import { useEffect, useState, useMemo } from "react";
+import Layout from "@/components/layout";
+import { EventCard } from "@/components/event-card";
+import { getEvents } from "@/services/events/get-events";
+import { EventCarousel } from "@/components/event-carousel";
+import { Input } from "@/components/ui/input";
+
+interface Event {
+  id: number;
+  name: string;
+  description?: string;
+  date: string;
+  dates?: string[];
+  price?: number;
+  location?: string;
+  image?: string;
+  ticketsSold?: number;
+  availableTickets?: number;
+  categories?: string[];
+  isTop?: boolean;
+}
+
+interface ActiveFilters {
+  priceRange: [number, number] | null;
+  locations: string[];
+  top: boolean;
+}
+
+function normalizeText(text: string): string {
+  return text
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .toLowerCase()
+    .replace(/\s+/g, "")
+    .replace(/[,.]/g, "");
+}
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [events, setEvents] = useState<Event[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string>("");
+  const [searchQuery, setSearchQuery] = useState("");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  const [currentPage, setCurrentPage] = useState(1);
+  const eventsPerPage = 8;
+
+  const [activeFilters, setActiveFilters] = useState<ActiveFilters>({
+    priceRange: null,
+    locations: [],
+    top: false,
+  });
+
+  const [showFilters, setShowFilters] = useState(false);
+
+  useEffect(() => {
+    getEvents()
+      .then((data) => {
+        setEvents(data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError(`Erro ao carregar os eventos: ${err}`);
+        setLoading(false);
+      });
+  }, []);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [searchQuery, activeFilters]);
+
+  const filteredEvents = useMemo(() => {
+    let filtered = events.filter((event) => {
+      const searchable = [
+        event.name || "",
+        event.date || "",
+        event.date || "",
+        event.location || "",
+        event.categories ? event.categories.join(" ") : "",
+        event.price !== undefined ? event.price.toString() : "",
+      ].join(" ");
+      const normSearchable = normalizeText(searchable);
+      const normQuery = normalizeText(searchQuery);
+      if (normQuery && !normSearchable.includes(normQuery)) {
+        return false;
+      }
+      if (activeFilters.priceRange) {
+        if (
+          event.price === undefined ||
+          event.price < activeFilters.priceRange[0] ||
+          event.price > activeFilters.priceRange[1]
+        ) {
+          return false;
+        }
+      }
+      if (activeFilters.locations.length > 0) {
+        const normLocation = event.location
+          ? normalizeText(event.location)
+          : "";
+        const matches = activeFilters.locations.some((loc) =>
+          normLocation.includes(normalizeText(loc))
+        );
+        if (!matches) return false;
+      }
+      return true;
+    });
+
+    if (activeFilters.top) {
+      filtered = filtered
+        .filter((e) => e.ticketsSold !== undefined)
+        .sort((a, b) => (b.ticketsSold || 0) - (a.ticketsSold || 0))
+        .slice(0, 4)
+        .map((e) => ({ ...e, isTop: true }));
+      return filtered;
+    }
+
+    if (
+      !searchQuery &&
+      !activeFilters.priceRange &&
+      activeFilters.locations.length === 0 &&
+      !activeFilters.top
+    ) {
+      const topSorted = [...filtered]
+        .filter((e) => e.ticketsSold !== undefined)
+        .sort((a, b) => (b.ticketsSold || 0) - (a.ticketsSold || 0));
+      const top4 = topSorted.slice(0, 4).map((e) => ({ ...e, isTop: true }));
+      const rest = filtered.filter((e) => !top4.some((top) => top.id === e.id));
+      return [...top4, ...rest];
+    }
+
+    return filtered;
+  }, [events, searchQuery, activeFilters]);
+
+  const paginatedEvents = useMemo(() => {
+    if (activeFilters.top) {
+      return filteredEvents;
+    } else {
+      const indexOfLast = currentPage * eventsPerPage;
+      const indexOfFirst = indexOfLast - eventsPerPage;
+      return filteredEvents.slice(indexOfFirst, indexOfLast);
+    }
+  }, [filteredEvents, currentPage, activeFilters.top]);
+
+  const totalPages = Math.ceil(filteredEvents.length / eventsPerPage);
+  const paginationButtons = [];
+  if (!activeFilters.top && filteredEvents.length > eventsPerPage) {
+    for (let i = 1; i <= totalPages; i++) {
+      paginationButtons.push(
+        <button
+          key={i}
+          onClick={() => setCurrentPage(i)}
+          className={`px-3 py-1 border rounded ${
+            currentPage === i
+              ? "bg-blue-600 text-white"
+              : "bg-white text-blue-600"
+          }`}
+        >
+          {i}
+        </button>
+      );
+    }
+  }
+
+  const togglePriceRange = (range: [number, number]) => {
+    setActiveFilters((prev) => ({
+      ...prev,
+      priceRange:
+        prev.priceRange &&
+        prev.priceRange[0] === range[0] &&
+        prev.priceRange[1] === range[1]
+          ? null
+          : range,
+    }));
+  };
+
+  const toggleLocation = (location: string) => {
+    setActiveFilters((prev) => {
+      const locations = prev.locations.includes(location)
+        ? prev.locations.filter((l) => l !== location)
+        : [...prev.locations, location];
+      return { ...prev, locations };
+    });
+  };
+
+  const toggleTop = () => {
+    setActiveFilters((prev) => ({ ...prev, top: !prev.top }));
+  };
+
+  if (loading) {
+    return (
+      <Layout>
+        <div className="p-12 text-center text-xl">Carregando eventos...</div>
+      </Layout>
+    );
+  }
+
+  if (error) {
+    return (
+      <Layout>
+        <div className="p-12 text-center text-xl text-red-500">{error}</div>
+      </Layout>
+    );
+  }
+
+  return (
+    <Layout newsletter={true}>
+      <EventCarousel events={events} />
+
+      <section className="p-12 flex flex-col items-center">
+        <h2 className="text-2xl font-bold mb-8">Eventos</h2>
+
+        <div className="w-full max-w-4xl mb-8">
+          <Input
+            type="text"
+            placeholder="Buscar por nome, data, local ou preço"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+            list="search-suggestions"
+            className="w-full border p-2 rounded"
+          />
+          <datalist id="search-suggestions">
+            <option value="São Paulo" />
+            <option value="Rio de Janeiro" />
+            <option value="2025-01" />
+            <option value="2025-02" />
+            <option value="Tecnologia" />
+            <option value="Workshop" />
+            <option value="Música" />
+            <option value="Festival" />
+          </datalist>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        <div className="mb-4 md:hidden">
+          <button
+            onClick={() => setShowFilters((prev) => !prev)}
+            className="px-4 py-2 border rounded bg-blue-600 text-white"
+          >
+            {showFilters ? "Esconder Filtros" : "Mostrar Filtros"}
+          </button>
+        </div>
+
+        {(showFilters ||
+          (typeof window !== "undefined" && window.innerWidth >= 768)) && (
+          <div className="flex flex-wrap gap-2 mb-8">
+            <button
+              onClick={() => togglePriceRange([10, 100])}
+              className={`px-3 py-1 border rounded ${
+                activeFilters.priceRange && activeFilters.priceRange[0] === 10
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600"
+              }`}
+            >
+              Valor 10-100
+            </button>
+            <button
+              onClick={() => togglePriceRange([100, 1000])}
+              className={`px-3 py-1 border rounded ${
+                activeFilters.priceRange && activeFilters.priceRange[0] === 100
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600"
+              }`}
+            >
+              Valor 100-1000
+            </button>
+            <button
+              onClick={() => toggleLocation("São Paulo")}
+              className={`px-3 py-1 border rounded ${
+                activeFilters.locations.includes("São Paulo")
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600"
+              }`}
+            >
+              São Paulo
+            </button>
+            <button
+              onClick={() => toggleLocation("Rio de Janeiro")}
+              className={`px-3 py-1 border rounded ${
+                activeFilters.locations.includes("Rio de Janeiro")
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600"
+              }`}
+            >
+              Rio de Janeiro
+            </button>
+            <button
+              onClick={toggleTop}
+              className={`px-3 py-1 border rounded ${
+                activeFilters.top
+                  ? "bg-blue-600 text-white"
+                  : "bg-white text-blue-600"
+              }`}
+            >
+              Mais Vendidos
+            </button>
+          </div>
+        )}
+
+        <div className="container grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {paginatedEvents.length > 0 ? (
+            paginatedEvents.map((event) => (
+              <EventCard key={event.id} {...event} />
+            ))
+          ) : (
+            <p className="col-span-full text-center text-lg">
+              Nenhum evento encontrado.
+            </p>
+          )}
+        </div>
+
+        {!activeFilters.top && filteredEvents.length > eventsPerPage && (
+          <div className="mt-8 flex gap-2">{paginationButtons}</div>
+        )}
+      </section>
+    </Layout>
   );
 }

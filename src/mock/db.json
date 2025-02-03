@@ -1,161 +1,240 @@
 {
   "events": [
     {
-      "id": 1,
+      "id": "1",
       "name": "Evento de Tecnologia",
       "description": "Encontro anual que reúne especialistas em tecnologia, inovação e startups.",
       "date": "01-01-2025",
-      "dates": ["01-01-2025", "02-01-2025"],
-      "price": 150.00,
+      "dates": [
+        "01-01-2025",
+        "02-01-2025"
+      ],
+      "price": 150,
       "location": "São Paulo, SP",
       "image": "/tec.jpeg",
       "ticketsSold": 200,
       "availableTickets": 500,
-      "categories": ["Tecnologia", "Inovação"]
+      "categories": [
+        "Tecnologia",
+        "Inovação"
+      ]
     },
     {
-      "id": 2,
+      "id": "2",
       "name": "Workshop de JavaScript",
       "description": "Aprenda e aperfeiçoe suas habilidades em JavaScript com profissionais do setor.",
       "date": "15-02-2025",
-      "dates": ["15-02-2025"],
-      "price": 80.00,
+      "dates": [
+        "15-02-2025"
+      ],
+      "price": 80,
       "location": "Rio de Janeiro, RJ",
       "image": "/progaming.jpg",
       "ticketsSold": 120,
       "availableTickets": 300,
-      "categories": ["Workshop", "Programação"]
+      "categories": [
+        "Workshop",
+        "Programação"
+      ]
     },
     {
-      "id": 3,
+      "id": "3",
       "name": "Festival de Música",
       "description": "Festival com apresentações de bandas nacionais e internacionais em três dias de muita música.",
       "date": "20-03-2025",
-      "dates": ["20-03-2025", "21-03-2025", "22-03-2025"],
-      "price": 200.00,
+      "dates": [
+        "20-03-2025",
+        "21-03-2025",
+        "22-03-2025"
+      ],
+      "price": 200,
       "location": "Belo Horizonte, MG",
       "image": "/music.jpg",
       "ticketsSold": 500,
       "availableTickets": 1000,
-      "categories": ["Música", "Festival"]
+      "categories": [
+        "Música",
+        "Festival"
+      ]
     },
     {
-      "id": 4,
+      "id": "4",
       "name": "Feira de Artes",
       "description": "Exposição e venda de obras de artistas locais, com apresentações culturais e oficinas.",
       "date": "10-04-2025",
-      "dates": ["10-04-2025", "11-04-2025"],
-      "price": 30.00,
+      "dates": [
+        "10-04-2025",
+        "11-04-2025"
+      ],
+      "price": 30,
       "location": "Curitiba, PR",
       "image": "/art.jpg",
       "ticketsSold": 50,
       "availableTickets": 200,
-      "categories": ["Arte", "Cultura"]
+      "categories": [
+        "Arte",
+        "Cultura"
+      ]
     },
     {
-      "id": 5,
+      "id": "5",
       "name": "Conferência de Inteligência Artificial",
       "description": "Evento dedicado a discussões sobre o futuro da IA e aprendizado de máquina.",
       "date": "05-05-2025",
-      "dates": ["05-05-2025", "06-05-2025"],
-      "price": 250.00,
+      "dates": [
+        "05-05-2025",
+        "06-05-2025"
+      ],
+      "price": 250,
       "location": "Brasília, DF",
       "image": "/conference.png",
       "ticketsSold": 300,
       "availableTickets": 600,
-      "categories": ["Tecnologia", "IA"]
+      "categories": [
+        "Tecnologia",
+        "IA"
+      ]
     },
     {
-      "id": 6,
+      "id": "6",
       "name": "Campeonato de eSports",
       "description": "Competição nacional com os melhores times de eSports do Brasil.",
       "date": "18-06-2025",
-      "dates": ["18-06-2025", "19-06-2025"],
-      "price": 120.00,
+      "dates": [
+        "18-06-2025",
+        "19-06-2025"
+      ],
+      "price": 120,
       "location": "São Paulo, SP",
       "image": "/esportes.jpeg",
       "ticketsSold": 800,
       "availableTickets": 1200,
-      "categories": ["Jogos", "eSports"]
+      "categories": [
+        "Jogos",
+        "eSports"
+      ]
     },
     {
-      "id": 7,
+      "id": "7",
       "name": "Festival de Cinema Independente",
       "description": "Mostra de filmes independentes com diretores e produtores renomados.",
       "date": "12-07-2025",
-      "dates": ["12-07-2025", "13-07-2025"],
-      "price": 50.00,
+      "dates": [
+        "12-07-2025",
+        "13-07-2025"
+      ],
+      "price": 50,
       "location": "Porto Alegre, RS",
       "image": "/cinema.jpeg",
       "ticketsSold": 200,
       "availableTickets": 500,
-      "categories": ["Cinema", "Cultura"]
+      "categories": [
+        "Cinema",
+        "Cultura"
+      ]
     },
     {
-      "id": 8,
+      "id": "8",
       "name": "Concurso de Cosplay",
       "description": "Evento com desfiles, competições e prêmios para os melhores cosplayers.",
       "date": "28-08-2025",
-      "dates": ["28-08-2025"],
-      "price": 40.00,
+      "dates": [
+        "28-08-2025"
+      ],
+      "price": 40,
       "location": "Fortaleza, CE",
       "image": "/cosplay.jpeg",
       "ticketsSold": 150,
       "availableTickets": 350,
-      "categories": ["Anime", "Cultura Pop"]
+      "categories": [
+        "Anime",
+        "Cultura Pop"
+      ]
     },
     {
-      "id": 9,
+      "id": "9",
       "name": "Feira do Livro",
       "description": "Encontro literário com lançamentos, palestras e sessão de autógrafos.",
       "date": "10-09-2025",
-      "dates": ["10-09-2025", "11-09-2025"],
-      "price": 20.00,
+      "dates": [
+        "10-09-2025",
+        "11-09-2025"
+      ],
+      "price": 20,
       "location": "Recife, PE",
       "image": "/livro.jpeg",
       "ticketsSold": 300,
       "availableTickets": 1000,
-      "categories": ["Livros", "Cultura"]
+      "categories": [
+        "Livros",
+        "Cultura"
+      ]
     },
     {
-      "id": 10,
+      "id": "10",
       "name": "Expo Fitness",
       "description": "Feira com novidades do mundo fitness, competições e palestras motivacionais.",
       "date": "25-10-2025",
-      "dates": ["25-10-2025", "26-10-2025"],
-      "price": 70.00,
+      "dates": [
+        "25-10-2025",
+        "26-10-2025"
+      ],
+      "price": 70,
       "location": "Rio de Janeiro, RJ",
       "image": "/fitness.jpg",
       "ticketsSold": 600,
       "availableTickets": 1200,
-      "categories": ["Saúde", "Fitness"]
+      "categories": [
+        "Saúde",
+        "Fitness"
+      ]
     },
     {
-      "id": 11,
+      "id": "11",
       "name": "Festival de Comida de Rua",
       "description": "Celebração gastronômica com os melhores food trucks e chefs de rua.",
       "date": "15-11-2025",
-      "dates": ["15-11-2025", "16-11-2025"],
-      "price": 25.00,
+      "dates": [
+        "15-11-2025",
+        "16-11-2025"
+      ],
+      "price": 25,
       "location": "Salvador, BA",
       "image": "/comida-rua.jpeg",
       "ticketsSold": 400,
       "availableTickets": 800,
-      "categories": ["Gastronomia", "Cultura"]
+      "categories": [
+        "Gastronomia",
+        "Cultura"
+      ]
     },
     {
-      "id": 12,
+      "id": "12",
       "name": "Campeonato Nacional de Skate",
       "description": "Competição com os melhores skatistas do país disputando prêmios incríveis.",
       "date": "05-12-2025",
-      "dates": ["05-12-2025", "06-12-2025"],
-      "price": 60.00,
+      "dates": [
+        "05-12-2025",
+        "06-12-2025"
+      ],
+      "price": 60,
       "location": "Florianópolis, SC",
       "image": "/skate.jpg",
       "ticketsSold": 250,
       "availableTickets": 500,
-      "categories": ["Esportes", "Adrenalina"]
+      "categories": [
+        "Esportes",
+        "Adrenalina"
+      ]
     }
-    
+  ],
+  "user": [
+    {
+      "id": "1",
+      "name": "John Doe",
+      "email": "johndoe@example.com",
+      "password": "password123",
+      "isAdmin": true
+    }
   ]
 }

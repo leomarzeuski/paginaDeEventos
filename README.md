@@ -72,18 +72,9 @@ Páginas estáticas: Suporte, Termos de Uso, Política de Privacidade, Trabalhe 
 Middleware para proteção de rotas específicas (ex: /payment e /profile).
 
 ## Melhorias e Otimizações Futuras
-Performance:
-Otimizar o carregamento de imagens utilizando lazy loading do Next.js Image.
-Implementar cache e revalidação de dados com SWR ou React Query.
 Autenticação:
 Utilizar uma solução robusta como NextAuth.js para gerenciamento de sessões e segurança.
 Melhorar o armazenamento seguro dos tokens (por exemplo, cookies HttpOnly).
-Filtros e Busca:
-Aprimorar a lógica de normalização para formatos de datas e valores.
-Adicionar sugestões dinâmicas com base nos dados dos eventos.
-Interface:
-Refinar o design responsivo e a experiência do usuário em dispositivos móveis.
-Incluir loaders e notificações para operações assíncronas (login, cadastro, etc.).
 Backend:
 Desenvolver endpoints reais para autenticação e gerenciamento de usuários com um banco de dados.
 Migrar do JSON Server para uma API real para produção.
